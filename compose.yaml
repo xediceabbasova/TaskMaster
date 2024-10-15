@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=tasks
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=khadija
+    ports:
+      - 5432:5432

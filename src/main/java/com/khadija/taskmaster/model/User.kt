@@ -1,33 +1,20 @@
-package com.khadija.taskmaster.model;
+package com.khadija.taskmaster.model
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.*
 
-import java.util.Set;
-
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "usr")
-public class User {
+data class User @JvmOverloads constructor(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    val id: Long? = null,
+    val username: String,
+    val email: String,
 
-    private String username;
-    private String email;
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
+    val tasks: Set<Task> = emptySet(),
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Task> tasks;
-
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
-    private Set<Comment> comments;
-
-}
+    @OneToMany(mappedBy = "author", cascade = [CascadeType.ALL])
+    val comments: Set<Comment> = emptySet()
+)

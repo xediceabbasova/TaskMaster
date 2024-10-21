@@ -1,6 +1,6 @@
-package com.khadija.taskmaster.model;
+package com.khadija.taskmaster.model
 
-public enum TaskStatus {
+enum class TaskStatus {
     NEW,
     IN_PROGRESS,
     COMPLETED

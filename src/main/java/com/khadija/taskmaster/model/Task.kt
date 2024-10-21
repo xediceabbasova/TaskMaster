@@ -1,41 +1,33 @@
-package com.khadija.taskmaster.model;
+package com.khadija.taskmaster.model
 
-import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import com.khadija.taskmaster.model.TaskStatus.*
+import jakarta.persistence.*
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import java.time.LocalDateTime
 
-import java.time.LocalDateTime;
-import java.util.Set;
-
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
-@EntityListeners(AuditingEntityListener.class)
-public class Task {
+@EntityListeners(AuditingEntityListener::class)
+data class Task @JvmOverloads constructor(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String title;
-    private String description;
+    val id: Long? = null,
+    val title: String,
+    val description: String,
 
     @Enumerated(EnumType.STRING)
-    private TaskStatus taskStatus;
+    val taskStatus: TaskStatus = NEW,
 
     @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdDate;
-    private LocalDateTime dueDate;
+    @Column(nullable = false, updatable = false)
+    val createdDate: LocalDateTime? = null,
+    val dueDate: LocalDateTime?,
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    val user: User,
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
-    private Set<Comment> comments;
-}
+    @OneToMany(mappedBy = "task", cascade = [CascadeType.ALL])
+    val comments: Set<Comment> = emptySet()
+)

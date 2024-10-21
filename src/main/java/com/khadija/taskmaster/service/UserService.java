@@ -1,5 +1,6 @@
 package com.khadija.taskmaster.service;
 
+import com.khadija.taskmaster.exception.UserAlreadyExistsException;
 import com.khadija.taskmaster.model.User;
 import com.khadija.taskmaster.repository.UserRepository;
 import org.keycloak.KeycloakPrincipal;
@@ -28,4 +29,13 @@ public class UserService {
 
         throw new RuntimeException("No authenticated user found");
     }
+
+    public void registerUser(String username, String email) {
+        if (userRepository.existsByUsernameOrEmail(username, email)) {
+            throw new UserAlreadyExistsException();
+        } else {
+            userRepository.save(new User(username, email));
+        }
+    }
+
 }

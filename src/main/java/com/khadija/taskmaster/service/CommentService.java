@@ -5,7 +5,9 @@ import com.khadija.taskmaster.dto.CommentMapper;
 import com.khadija.taskmaster.dto.request.CommentRequest;
 import com.khadija.taskmaster.exception.CommentNotFoundException;
 import com.khadija.taskmaster.model.Comment;
+import com.khadija.taskmaster.model.User;
 import com.khadija.taskmaster.repository.CommentRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +29,7 @@ public class CommentService {
     }
 
     public CommentDto createComment(final Long taskId, final CommentRequest request) {
-        Comment comment = mapper.toComment(request, taskService.findTaskById(taskId), userService.getCurrentUser());
+        Comment comment = mapper.toComment(request, taskService.findTaskById(taskId), getCurrentUser());
         return mapper.fromComment(commentRepository.save(comment));
     }
 
@@ -42,6 +44,14 @@ public class CommentService {
                 .toList();
     }
 
+    public List<CommentDto> getCommentsByCurrentUser() {
+        return commentRepository.findAllByAuthor(getCurrentUser())
+                .stream()
+                .map(mapper::fromComment)
+                .toList();
+    }
+
+    @Transactional
     public CommentDto updateComment(final Long commentId, final CommentRequest request) {
         Comment comment = findCommentById(commentId);
         Comment updatedComment = new Comment(
@@ -62,6 +72,10 @@ public class CommentService {
     private Comment findCommentById(final Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException(commentId));
+    }
+
+    private User getCurrentUser() {
+        return userService.getCurrentUser();
     }
 
 }

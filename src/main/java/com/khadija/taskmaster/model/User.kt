@@ -9,7 +9,11 @@ data class User @JvmOverloads constructor(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
+
+    @Column(unique = true)
     val username: String,
+
+    @Column(unique = true)
     val email: String,
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])

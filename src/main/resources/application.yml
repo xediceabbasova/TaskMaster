@@ -21,7 +21,7 @@ spring:
 jwt:
   auth:
     converter:
-      resource-id: khadija-rest-api
+      resource-id: taskmaster-client
       principle-attribute: preferred_username
 
 server:

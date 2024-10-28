@@ -4,10 +4,10 @@ import com.khadija.taskmaster.model.TaskStatus.*
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity
-@EntityListeners(AuditingEntityListener::class)
 data class Task @JvmOverloads constructor(
 
     @Id
@@ -18,11 +18,8 @@ data class Task @JvmOverloads constructor(
 
     @Enumerated(EnumType.STRING)
     val taskStatus: TaskStatus = NEW,
-
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    val createdDate: LocalDateTime? = null,
-    val dueDate: LocalDateTime?,
+    val createdDate: LocalDateTime = LocalDateTime.now(),
+    val dueDate: LocalDate?,
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
 
   postgres:
@@ -8,6 +10,8 @@ services:
       - POSTGRES_USER=khadija
     ports:
       - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   keycloak:
     container_name: keycloak
@@ -15,8 +19,13 @@ services:
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_EVENT_LISTENERS: jboss-logging,custom-listener
     ports:
       - "9090:8080"
     command:
       - "start-dev"
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+
+volumes:
+  postgres_data:
+  keycloak_data:

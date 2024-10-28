@@ -1,5 +1,6 @@
 package com.khadija.taskmaster.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record TaskDto(
@@ -8,6 +9,6 @@ public record TaskDto(
         String description,
         String taskStatus,
         LocalDateTime createdDate,
-        LocalDateTime dueDate
+        LocalDate dueDate
 ) {
 }

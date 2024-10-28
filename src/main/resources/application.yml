@@ -13,10 +13,16 @@ spring:
     show-sql: true
   security:
     oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8080/realms/Khadija
-          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+      client:
+        registration:
+          keycloak:
+            client-id: taskmaster-client
+            client-secret: *
+            scope: openid
+            redirect-uri: http://localhost:8081/login/oauth2/code/taskmaster-client
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:9090/realms/taskmaster
 
 jwt:
   auth:
